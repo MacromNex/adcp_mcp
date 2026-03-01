@@ -1,0 +1,48 @@
+{
+  "_description": "Default configuration for ADCP-based cyclic peptide MCP tools",
+  "_version": "1.0",
+  "_created": "2026-02-23",
+
+  "adcp": {
+    "binary": "adcp_Linux-x86_64",
+    "data_file": "ramaprob.data",
+    "supported_architectures": ["x86_64"],
+    "supported_os": ["linux"]
+  },
+
+  "peptide_constraints": {
+    "amino_acids": "ACDEFGHIKLMNPQRSTVWY",
+    "min_length": 6,
+    "max_length": 20,
+    "recommended_max_length": 16
+  },
+
+  "default_parameters": {
+    "cyclic": true,
+    "disulfide": false,
+    "optimization_weights": [1, 0.25, 0.75, 0.0],
+    "bias": "NULL",
+    "threads_per_job": 1
+  },
+
+  "performance": {
+    "max_workers": 4,
+    "timeout_seconds": 300,
+    "retry_attempts": 1,
+    "memory_limit_mb": 2048
+  },
+
+  "output": {
+    "formats": ["pdb"],
+    "include_metadata": true,
+    "save_logs": true,
+    "create_summaries": true
+  },
+
+  "validation": {
+    "check_sequence_format": true,
+    "check_binary_availability": true,
+    "check_data_files": true,
+    "warn_long_sequences": true
+  }
+}

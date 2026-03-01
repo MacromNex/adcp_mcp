@@ -1,0 +1,61 @@
+{
+  "test_date": "2026-02-23T09:50:43.005073",
+  "server_name": "adcp-tools",
+  "server_path": "src/server.py",
+  "mcp_root": ".",
+  "tests": {
+    "server_startup": {
+      "status": "passed",
+      "output": "Server import successful",
+      "error": "",
+      "description": "Import server module and check for errors"
+    },
+    "utility_functions": {
+      "status": "passed",
+      "output": "Valid sequence test: True\nInvalid sequence test: True\nBinary found: True\nAll utility tests passed",
+      "error": "",
+      "description": "Test sequence validation and binary finder functions"
+    },
+    "adcp_binary": {
+      "status": "passed",
+      "output": "Binary path: adcp_Linux-x86_64\nIs executable: True\nFile size: 1169968 bytes\nADCP binary check passed",
+      "error": "",
+      "description": "Check ADCP binary exists and is executable"
+    },
+    "job_manager": {
+      "status": "passed",
+      "output": "Job manager initialized with dir: test_jobs\nJob statuses available: ['pending', 'running', 'completed', 'failed', 'cancelled']\nJob manager test passed",
+      "error": "",
+      "description": "Test job manager initialization and basic functionality"
+    },
+    "fastmcp_dev_mode": {
+      "status": "passed",
+      "output": "Starting MCP inspector...\n",
+      "error": "",
+      "description": "Test server starts with fastmcp dev command"
+    },
+    "claude_mcp_registration": {
+      "status": "passed",
+      "output": "Checking MCP server health...\n\nadcp-tools: /home/xux/miniforge3/envs/cycpepmcp/bin/python /mnt/data/done_projects/2026/BioMolMCP/CycPepMCP/tool-mcps/adcp_mcp/src/server.py - \u2713 Connected\n",
+      "error": "",
+      "description": "Check server is registered with Claude MCP"
+    },
+    "example_data_files": {
+      "status": "passed",
+      "output": "Checked 1 files",
+      "error": "",
+      "description": "Check required example data files exist"
+    }
+  },
+  "issues": [],
+  "summary": {
+    "total_tests": 7,
+    "passed": 7,
+    "failed": 0,
+    "errors": 0,
+    "pass_rate": "100.0%",
+    "critical_issues": 0,
+    "high_issues": 0,
+    "medium_issues": 0
+  }
+}

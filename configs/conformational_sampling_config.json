@@ -1,0 +1,44 @@
+{
+  "_description": "Configuration for cyclic peptide conformational sampling using ADCP",
+  "_source": "Extracted from examples/use_case_4_conformational_sampling.py",
+
+  "sampling": {
+    "numsteps": 500000,
+    "nbruns": 25,
+    "timeout_seconds": 600
+  },
+
+  "execution": {
+    "maxcores": 4,
+    "adcp_binary": "adcp_Linux-x86_64"
+  },
+
+  "constraints": {
+    "cyclic": true,
+    "disulfide": false,
+    "optimization_weights": [1, 0.25, 0.75, 0.0]
+  },
+
+  "validation": {
+    "min_sequence_length": 6,
+    "max_sequence_length": 20
+  },
+
+  "examples": {
+    "short_sampling": {
+      "numsteps": 1000,
+      "nbruns": 3,
+      "description": "Quick test sampling"
+    },
+    "intensive_sampling": {
+      "numsteps": 1000000,
+      "nbruns": 100,
+      "description": "Intensive conformational exploration"
+    },
+    "disulfide_peptide": {
+      "cyclic": true,
+      "disulfide": true,
+      "description": "For peptides with cysteine residues"
+    }
+  }
+}

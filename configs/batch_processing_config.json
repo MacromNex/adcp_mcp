@@ -1,0 +1,51 @@
+{
+  "_description": "Configuration for batch processing multiple cyclic peptide sequences",
+  "_source": "Extracted from examples/use_case_5_batch_processing.py + alternative implementation",
+
+  "processing": {
+    "numsteps": 1000,
+    "max_workers": 4,
+    "timeout_seconds": 300,
+    "retry_attempts": 1
+  },
+
+  "execution": {
+    "adcp_binary": "adcp_Linux-x86_64"
+  },
+
+  "constraints": {
+    "cyclic": true,
+    "disulfide": false,
+    "optimization_weights": [1, 0.25, 0.75, 0.0]
+  },
+
+  "validation": {
+    "min_sequence_length": 6,
+    "max_sequence_length": 20
+  },
+
+  "output": {
+    "save_detailed_logs": true,
+    "create_summary_csv": true,
+    "create_detailed_json": true
+  },
+
+  "examples": {
+    "quick_batch": {
+      "numsteps": 500,
+      "max_workers": 2,
+      "timeout_seconds": 120,
+      "description": "Quick processing for testing"
+    },
+    "production_batch": {
+      "numsteps": 5000,
+      "max_workers": 8,
+      "timeout_seconds": 600,
+      "description": "Production-level processing"
+    },
+    "sequential_processing": {
+      "max_workers": 1,
+      "description": "Process sequences one at a time (no parallelization)"
+    }
+  }
+}

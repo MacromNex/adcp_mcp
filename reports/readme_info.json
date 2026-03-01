@@ -1,0 +1,185 @@
+{
+  "project_name": "adcp-tools",
+  "description": "MCP tools for cyclic peptide conformational sampling and analysis using AutoDock CrankPep",
+  "version": "1.0.0",
+  "server_name": "adcp-cycpep-tools",
+  "tools": [
+    {
+      "name": "submit_conformational_sampling",
+      "type": "submit",
+      "description": "Generate conformational ensembles for single cyclic peptides using Monte Carlo sampling",
+      "example_prompt": "Submit conformational sampling for cyclic peptide 'GPGPGPGP' with 10 runs",
+      "runtime": "20-60 minutes",
+      "parameters": ["sequence", "numsteps", "nbruns", "cyclic", "disulfide", "output_dir", "job_name"]
+    },
+    {
+      "name": "submit_batch_processing",
+      "type": "submit",
+      "description": "Process multiple cyclic peptide sequences in parallel",
+      "example_prompt": "Process sequences in @examples/data/sequences/batch_sequences.txt with 2 workers",
+      "runtime": "30+ minutes",
+      "parameters": ["input_file", "numsteps", "max_workers", "cyclic", "disulfide", "timeout", "output_dir", "job_name"]
+    },
+    {
+      "name": "get_job_status",
+      "type": "management",
+      "description": "Check job progress and current status",
+      "example_prompt": "Check the status of job abc12345",
+      "runtime": "<1 second",
+      "parameters": ["job_id"]
+    },
+    {
+      "name": "get_job_result",
+      "type": "management",
+      "description": "Get completed job results and output files",
+      "example_prompt": "Get results from completed job abc12345",
+      "runtime": "<1 second",
+      "parameters": ["job_id"]
+    },
+    {
+      "name": "get_job_log",
+      "type": "management",
+      "description": "View job execution logs with tail support",
+      "example_prompt": "Show me the last 20 lines from job abc12345 logs",
+      "runtime": "<1 second",
+      "parameters": ["job_id", "tail"]
+    },
+    {
+      "name": "cancel_job",
+      "type": "management",
+      "description": "Cancel a running job",
+      "example_prompt": "Cancel job abc12345",
+      "runtime": "<1 second",
+      "parameters": ["job_id"]
+    },
+    {
+      "name": "list_jobs",
+      "type": "management",
+      "description": "List all jobs with optional status filter",
+      "example_prompt": "List all running jobs",
+      "runtime": "<1 second",
+      "parameters": ["status"]
+    },
+    {
+      "name": "validate_peptide_sequence",
+      "type": "utility",
+      "description": "Validate amino acid sequence for ADCP processing",
+      "example_prompt": "Validate this peptide sequence: GPGPGPGP",
+      "runtime": "<1 second",
+      "parameters": ["sequence"]
+    },
+    {
+      "name": "check_adcp_binary",
+      "type": "utility",
+      "description": "Verify ADCP binary availability and access",
+      "example_prompt": "Check if ADCP binary is available",
+      "runtime": "<1 second",
+      "parameters": []
+    },
+    {
+      "name": "get_server_info",
+      "type": "utility",
+      "description": "Get server capabilities and current status",
+      "example_prompt": "What tools are available from adcp-tools?",
+      "runtime": "<1 second",
+      "parameters": []
+    }
+  ],
+  "scripts": [
+    {
+      "name": "conformational_sampling.py",
+      "description": "Generate conformational ensembles for single cyclic peptides using ADCP",
+      "example_command": "python scripts/conformational_sampling.py --input GPGPGPGP --output results/conformations --numsteps 10000 --nbruns 5",
+      "parameters": ["input", "output", "numsteps", "nbruns", "cyclic", "disulfide", "dry-run"],
+      "runtime": "1-60 minutes depending on parameters"
+    },
+    {
+      "name": "batch_processing.py",
+      "description": "Process multiple cyclic peptide sequences in parallel",
+      "example_command": "python scripts/batch_processing.py --input examples/data/sequences/batch_sequences.txt --output results/batch_output --max-workers 2",
+      "parameters": ["input", "output", "max-workers", "numsteps", "timeout", "cyclic", "disulfide", "dry-run"],
+      "runtime": "10+ minutes depending on sequence count"
+    }
+  ],
+  "demo_data": [
+    {
+      "file": "examples/data/sequences/batch_sequences.txt",
+      "description": "24 sample cyclic peptide sequences for batch processing",
+      "format": "Text file with sequences (one per line or tab-separated ID\\tSEQUENCE)",
+      "used_by": ["submit_batch_processing", "batch_processing.py"]
+    },
+    {
+      "file": "examples/data/sequences/cyclic_peptides.smi",
+      "description": "Sample cyclic peptide sequences in SMILES-like format",
+      "format": "SMILES format",
+      "used_by": ["manual reference"]
+    },
+    {
+      "file": "examples/data/structures/sample_peptide.pdb",
+      "description": "Sample GPGP peptide 3D structure",
+      "format": "PDB format",
+      "used_by": ["structure-based analysis", "validation"]
+    }
+  ],
+  "configs": [
+    {
+      "file": "configs/conformational_sampling_config.json",
+      "description": "Configuration for single peptide conformational sampling",
+      "parameters": {
+        "numsteps": 500000,
+        "nbruns": 25,
+        "cyclic": true,
+        "disulfide": false,
+        "timeout_seconds": 600
+      }
+    },
+    {
+      "file": "configs/batch_processing_config.json",
+      "description": "Configuration for batch processing multiple sequences",
+      "parameters": {
+        "numsteps": 1000,
+        "max_workers": 4,
+        "timeout_seconds": 300,
+        "cyclic": true,
+        "save_detailed_logs": true
+      }
+    },
+    {
+      "file": "configs/default_config.json",
+      "description": "System-wide defaults and validation rules",
+      "parameters": {
+        "min_sequence_length": 6,
+        "max_sequence_length": 20,
+        "adcp_binary": "adcp_Linux-x86_64"
+      }
+    }
+  ],
+  "installation": {
+    "environment_path": "./env",
+    "python_version": "3.12",
+    "package_manager": "mamba",
+    "key_dependencies": ["numpy", "loguru", "click", "pandas", "tqdm", "fastmcp"],
+    "binary_requirements": ["adcp_Linux-x86_64", "ramaprob.data"],
+    "platform": "Linux x86_64"
+  },
+  "usage_examples": [
+    {
+      "name": "Quick Conformational Sampling",
+      "mcp_prompt": "Submit conformational sampling for cyclic peptide 'GPGPGPGP' with 5 runs and 10000 steps per run",
+      "script_command": "python scripts/conformational_sampling.py --input GPGPGPGP --output results/test --numsteps 10000 --nbruns 5",
+      "expected_output": "Multiple PDB files with conformational structures and JSON metadata"
+    },
+    {
+      "name": "Batch Library Screening",
+      "mcp_prompt": "Process sequences in @examples/data/sequences/batch_sequences.txt with 2 workers and 5000 steps per sequence",
+      "script_command": "python scripts/batch_processing.py --input examples/data/sequences/batch_sequences.txt --max-workers 2 --numsteps 5000",
+      "expected_output": "CSV summary file, JSON detailed results, and individual PDB files"
+    },
+    {
+      "name": "Job Management Workflow",
+      "mcp_prompt": "1. Submit conformational sampling for 'GRGDSP' with 3 runs\\n2. Check job status\\n3. Get results when complete",
+      "script_command": "N/A (MCP workflow only)",
+      "expected_output": "Job tracking through submission, monitoring, and result retrieval"
+    }
+  ]
+}
